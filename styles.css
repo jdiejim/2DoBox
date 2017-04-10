@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #939598;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  background: #e5f3f2;
+}
+
+label {
+  display: none;
+}
+
+h1 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 40px;
+  color: #00a79d;
+}
+
+h2 {
+  display: inline-block;
+  width: 90%;
+  padding-bottom: 15px;
+  color: #6d6e71;
+  font-family: 'Roboto Slab', serif;
+  font-size: 22px;
+}
+
+.header {
+  color: #6d6e71;
+}
+
+.top-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 25vh;
+  padding-bottom: 30px;
+  background: #e5f3f2;
+}
+
+.save-button {
+  background: #00a79d;
+  border: none;
+  color: #fff;
+}
+
+.save-button:disabled {
+  background: #989898;
+}
+
+.save-button:hover {
+  background: #045e55;
+}
+
+
+input,
+textarea,
+.save-button {
+  max-width: 750px;
+  width: 60%;
+  height: 35px;
+  padding-left: 5px;
+  font-size: 24px;
+}
+
+input,
+textarea {
+  border: 1px solid #A9A9A9;
+}
+
+textarea {
+  resize: none;
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+}
+
+.idea-card {
+  max-width: 750px;
+  width: 60%;
+  border-bottom: 1px solid #d1d3d4;
+  padding-bottom: 10px;
+  padding-top: 30px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+}
+
+.delete,
+.up-vote,
+.down-vote {
+  width: 25px;
+  height: 25px;
+  border: none;
+}
+
+.delete {
+  float: right;
+  vertical-align: top;
+  background: url("assets/delete.svg") no-repeat;
+  background-size: cover;
+}
+
+.delete:hover {
+  background: url("assets/delete-hover.svg") no-repeat;
+  background-size: cover;
+}
+
+p {
+  padding-bottom: 20px;
+}
+
+.up-vote {
+  margin-right: 10px;
+  background: url("assets/upvote.svg") no-repeat;
+  background-size: cover;
+}
+
+.up-vote:hover {
+  background: url("assets/upvote-hover.svg") no-repeat;
+  background-size: cover;
+}
+
+.down-vote {
+  margin-right: 10px;
+  background: url("assets/downvote.svg") no-repeat;
+  background-size: cover;
+}
+
+.down-vote:hover {
+  background: url("assets/downvote-hover.svg") no-repeat;
+  background-size: cover;
+}
+
+.quality-container {
+  width: 210px;
+}
+
+.idea-quality {
+  display: inline;
+  padding-top: 2px;
+}
+
+.quality-font {
+  font-family: 'Roboto Slab', serif;
+  color: #6d6e71;
+}
+
+/*media queries*/
+
+@media (max-width: 700px) {
+ input,
+ textarea,
+ .save-button,
+ .idea-card {
+   width: 85%;
+ }
+}
+
+@media (max-width: 400px) {
+.top-container {
+  height: 40vh;
+}
+
+.header {
+  padding: 30px 0;
+}
+
+#body {
+   height: 120px;
+ }
+}
