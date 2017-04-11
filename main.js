@@ -1,9 +1,6 @@
 // TODO: button validation
 
 // ----- Setup -----
-// TODO: remove global function
-var ideaArray = []
-
 prependIdeas(getIdeas());
 
 // ----- Classes -----
@@ -16,13 +13,13 @@ function Idea(inputs) {
 
 // ----- Events Listeners -----
 $('.save-button').on('click', saveIdea);
-$('#title', '.save-button').on('keyup', enterKey);
 $('.search-bar').on('keyup', searchIdeas)
 $('.card-container').on('click', '.delete', deleteIdea)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
-                    .on('blur', '.title', updateTitle)
-                    .on('blur', '.body', updateBody);
+                    .on('focusout', '.title', updateTitle)
+                    .on('focusout', '.body', updateBody)
+                    .on('keyup', enterKeyBlur);
 
 // ----- Event Functions -----
 function saveIdea() {
@@ -32,10 +29,9 @@ function saveIdea() {
   clearInputs();
 }
 
-// BUG: Fix functionality
-function enterKey() {
-  if (event.keyCode == 13) {
-    $('.save-button').click()
+function enterKeyBlur(e) {
+  if (e.which === 13) {
+    $(e.target).blur();
   }
 }
 
