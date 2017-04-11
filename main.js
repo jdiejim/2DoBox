@@ -44,23 +44,14 @@ function deleteIdea() {
   $(this).parent().remove()
 }
 
-// TODO: change tag to class to target correctly
-// TODO: elminiate thisButton variable
 function upVote() {
-  var rating = $(this).siblings('.idea-quality').find(".rating");
-  var thisButton = $(this)
-  switch (rating.text()) {
-    case 'swill':
-    rating.text('plausible')
-    updateArrayQuality(thisButton, rating);
-    break;
-    case 'plausible':
-    rating.text('genius')
-    updateArrayQuality(thisButton, rating)
-    break;
-    case 'genius':
-    break
-  }
+  var ideas = getIdeas();
+  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
+  var idea = ideas[index];
+  idea.quality = upQuality(idea.quality);
+  ideas[index] = idea;
+  storeIdea(ideas);
+  $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
 }
 
 // TODO: change tag to class to target correctly
@@ -201,12 +192,15 @@ function getIdeas() {
   return JSON.parse(localStorage.getItem('ideas'));
 }
 
-function updateArrayQuality(thisButton, rating) {
-  var cardID = thisButton.closest('.idea-card').attr('id')
-  ideaArray.forEach(function(idea) {
-    if (cardID == idea.id) {
-      idea.quality = rating.text()
-    }
-    storeIdea()
-  })
+function upQuality(quality) {
+  switch (quality) {
+    case 'swill':
+      return 'palusible';
+    case 'palusible':
+      return 'genius';
+    case 'genius':
+      return 'genius';
+    default:
+      return 'swill';
+  }
 }
