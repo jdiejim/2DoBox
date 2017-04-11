@@ -1,115 +1,103 @@
 // BUG: duplicates first when saved; But returns to normal after refresh
-// FIXME: no enter key functionality
-// TODO: Event listener functions
 
 // ----- Setup -----
 // TODO: remove global function
 var ideaArray = []
 
-// TODO: add regular function call to load on refresh/open
-$(document).ready(function() {
-    prependCard()
-})
+prependIdeas()
 
-// ----- Constructors -----
-// TODO: remove card constructor
-function CardObject(id, title, body) {
-  this.id = id
-  this.title = title
-  this.body = body
-  this.quality = "swill"
+// ----- Classes -----
+function CardObject(inputs) {
+  this.title = inputs.title;
+  this.body = inputs.body;
+  this.id = inputs.id;
+  this.quality = "swill";
+  this.element = '';
 }
 
-// ----- Events -----
-// TODO: make saveIdea function separate
-// TODO: remove global functionality
-$('.save-button').on('click', function() {
-  var $title = $('#title').val()
-  var $body = $('#body').val()
-  var $id = Date.now()
-  var newIdea = new CardObject($id, $title, $body)
+// ----- Events Listeners -----
+$('.save-button').on('click', saveIdea);
+$('#title', '.save-button').on('keyup', enterKey);
+$('.search-bar').on('keyup', searchIdeas)
+$('.card-container').on('click', '.delete', deleteIdea)
+                    .on('click', '.up-vote', upVote)
+                    .on('click', '.down-vote', downVote)
+                    .on('blur', 'h2', editableTitle)
+                    .on('blur', 'p', editableBody);
+
+// ----- Event Functions -----
+function saveIdea() {
+  var idea = new CardObject(getInputs());
+  idea.element = buildIdeaElement(idea);
+  storeIdea(pushToIdeas(idea));
+  prependIdeas()
   clearInputs()
-  ideaArray.push(newIdea)
-  storeIdea()
-  prependCard()
-  console.log(localStorage);
-})
+}
 
 // BUG: Fix functionality
-$('#title', '.save-button').on('keyup', function(event) {
+function enterKey() {
   if (event.keyCode == 13) {
     $('.save-button').click()
   }
-})
+}
 
-// TODO: Check this parent() if better
-// TODO: change attr to prop
-// TODO: remove global variable
-$('.card-container').on('click', '.delete', function() {
-  $(this).closest('.idea-card').remove()
-  var cardID = $(this).closest('.idea-card').attr('id')
-  ideaArray.forEach(function(idea, index) {
-    if (cardID == idea.id) {
-      ideaArray.splice(index, 1)
-    }
-  })
-  storeIdea()
-})
+function deleteIdea() {
+  storeIdea(removeFromIdeas($(this).parent().prop('id')))
+  $(this).parent().remove()
+}
 
 // TODO: change tag to class to target correctly
 // TODO: elminiate thisButton variable
-// TODO: make individual function
-$('.card-container').on('click', '.up-vote', function() {
-  var rating = ($(this).siblings("p").children(".rating"))
+function upVote() {
+  var rating = $(this).siblings('.idea-quality').find(".rating"));
   var thisButton = $(this)
   switch (rating.text()) {
     case 'swill':
-      rating.text('plausible')
-      updateArrayQuality(thisButton, rating);
-      break;
+    rating.text('plausible')
+    updateArrayQuality(thisButton, rating);
+    break;
     case 'plausible':
-      rating.text('genius')
-      updateArrayQuality(thisButton, rating)
-      break;
+    rating.text('genius')
+    updateArrayQuality(thisButton, rating)
+    break;
     case 'genius':
-      break
+    break
   }
-})
+}
 
 // TODO: change tag to class to target correctly
 // TODO: elminiate thisButton variable
-// TODO: make individual function
-$('.card-container').on('click', '.down-vote', function() {
+function downVote() {
   var rating = ($(this).siblings("p").children(".rating"))
   var thisButton = $(this)
   switch (rating.text()) {
     case 'genius':
-      rating.text('plausible')
-      updateArrayQuality(thisButton, rating)
-      break;
+    rating.text('plausible')
+    updateArrayQuality(thisButton, rating)
+    break;
     case 'plausible':
-      rating.text('swill')
-      updateArrayQuality(thisButton, rating)
-      break;
+    rating.text('swill')
+    updateArrayQuality(thisButton, rating)
+    break;
     case 'swill':
-      break
+    break
   }
-})
+}
 
 // FIXME: functionality
-$('.card-container').on('blur', 'h2', function() {
+function editableTitle() {
   var cardID = $(this).closest('.idea-card').attr('id')
   var h2Text = $(this).text()
   ideaArray.forEach(function(idea) {
     if (cardID == idea.id) {
-        idea.title = h2Text
+      idea.title = h2Text
     }
   })
   storeIdea()
-})
+}
 
 // FIXME: functionality
-$('.card-container').on('blur', 'p', function() {
+function editableBody() {
   var cardID = $(this).closest('.idea-card').attr('id')
   var h2Body = $(this).text()
   ideaArray.forEach(function(idea) {
@@ -118,59 +106,6 @@ $('.card-container').on('blur', 'p', function() {
     }
   })
   storeIdea()
-})
-
-// FIXME: make independent function call
-$('.search-bar').on('keyup', function(event) {
-  searchIdeas()
-})
-
-// ----- Event Functions -----
-
-// ----- Functions -----
-
-// FIXME: remove global variable
-function prependCard() {
-  getIdeas()
-  ideaArray.forEach(function(idea) {
-  $('.card-container').prepend(
-    `<article class="idea-card" id="${idea.id}">
-      <button type="button" class="delete"></button>
-      <h2 contenteditable="true">${idea.title}</h2>
-      <p contenteditable="true">${idea.body}</p>
-      <div class="quality-container">
-        <button type="button" class="up-vote"></button>
-        <button type="button" class="down-vote"></button>
-        <p class="idea-quality"><span class="quality-font">quality: </span><span class="rating">${idea.quality}</span></p>
-      </div>
-    </article>`)
-  })
-}
-
-function clearInputs() {
-  $('#title').val('')
-  $('#body').val('')
-}
-
-function storeIdea() {
-  var stringifiedIdea = JSON.stringify(ideaArray)
-  localStorage.setItem('ideas', stringifiedIdea)
-}
-
-function getIdeas() {
-  var getIdeas = localStorage.getItem('ideas') || '[]'
-  var parsedIdea = JSON.parse(getIdeas)
-  ideaArray = parsedIdea
-}
-
-function updateArrayQuality(thisButton, rating) {
-  var cardID = thisButton.closest('.idea-card').attr('id')
-  ideaArray.forEach(function(idea) {
-    if (cardID == idea.id) {
-      idea.quality = rating.text()
-    }
-    storeIdea()
-  })
 }
 
 // TODO: separate functionality into individual functions
@@ -195,5 +130,86 @@ function searchIdeas() {
   })
   searchResults.forEach(function (idea, index) {
     $('#'+idea.id).show()
+  })
+}
+
+// ----- Functions -----
+function prependIdeas() {
+  $('.card-container').html('');
+  getIdeas().forEach(function(idea) {
+    $('.card-container').prepend(idea.element);
+  });
+}
+
+function getInputs() {
+  return {  title: $('#title').val(),
+            body: $('#body').val(),
+            id: Date.now()
+          }
+}
+
+function pushToIdeas(idea) {
+  var ideas = getIdeas();
+  ideas.push(idea);
+  return ideas;
+}
+
+function getIdeaIndex(id) {
+  var ideas = getIdeas();
+  return ideas.map(getIdeaId).indexOf(parseInt(id));
+}
+
+function getIdeaId(idea) {
+  return idea.id;
+}
+
+function removeFromIdeas(id) {
+  var ideas = getIdeas();
+  ideas.splice(getIdeaIndex(id), 1);
+  return ideas;
+}
+
+function buildIdeaElement(idea) {
+  return `<article class="idea-card" id="${idea.id}">
+            <button type="button" class="delete"></button>
+            <h2 contenteditable="true">${idea.title}</h2>
+            <p contenteditable="true">${idea.body}</p>
+            <div class="quality-container">
+              <button type="button" class="up-vote"></button>
+              <button type="button" class="down-vote"></button>
+              <p class="idea-quality">
+                <span class="quality-font">quality: </span>
+                <span class="rating">${idea.quality}</span>
+              </p>
+              </div>
+          </article>`
+}
+
+function clearInputs() {
+  $('#title').val('')
+  $('#body').val('')
+}
+
+function storeIdea(array) {
+  localStorage.setItem('ideas', JSON.stringify(array));
+}
+
+function getIdeas() {
+  try {
+    JSON.parse(localStorage.getItem('ideas'));
+  }
+  catch(err) {
+    storeIdea([]);
+  }
+  return JSON.parse(localStorage.getItem('ideas'));
+}
+
+function updateArrayQuality(thisButton, rating) {
+  var cardID = thisButton.closest('.idea-card').attr('id')
+  ideaArray.forEach(function(idea) {
+    if (cardID == idea.id) {
+      idea.quality = rating.text()
+    }
+    storeIdea()
   })
 }
