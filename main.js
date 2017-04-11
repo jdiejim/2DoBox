@@ -4,7 +4,7 @@
 // TODO: remove global function
 var ideaArray = []
 
-prependIdeas()
+prependIdeas(getIdeas());
 
 // ----- Classes -----
 function Idea(inputs) {
@@ -28,7 +28,7 @@ $('.card-container').on('click', '.delete', deleteIdea)
 function saveIdea() {
   var idea = new Idea(getInputs());
   storeIdea(pushToIdeas(idea));
-  prependIdeas();
+  prependIdeas(getIdeas());
   clearInputs();
 }
 
@@ -88,35 +88,19 @@ function editableBody() {
   storeIdea()
 }
 
-// TODO: separate functionality into individual functions
 function searchIdeas() {
-  var searchText = $('.search-bar').val().toLowerCase()
-  ideaArray.forEach( function(idea, index) {
-    idea.title = idea.title.toLowerCase()
-    idea.body = idea.body.toLowerCase()
-  })
-  var searchResultsNeg = ideaArray.filter(function(idea) {
-    return idea.title.indexOf(searchText) == -1 &&
-    idea.body.indexOf(searchText) == -1 &&
-    idea.quality.indexOf(searchText) == -1
-  })
-  var searchResults = ideaArray.filter(function(idea) {
-    return idea.title.indexOf(searchText) != -1 ||
-    idea.body.indexOf(searchText) != -1 ||
-    idea.quality.indexOf(searchText) != -1
-  })
-  searchResultsNeg.forEach(function (idea, index) {
-    $('#'+idea.id).hide()
-  })
-  searchResults.forEach(function (idea, index) {
-    $('#'+idea.id).show()
-  })
+  var searchValue = $(this).val().toLowerCase();
+  if (searchValue !== '') {
+    prependIdeas(getFilteredIdeas(searchValue));
+  } else {
+    prependIdeas(getIdeas());
+  }
 }
 
 // ----- Functions -----
-function prependIdeas() {
+function prependIdeas(ideas) {
   $('.card-container').html('');
-  getIdeas().forEach(function(idea) {
+  ideas.forEach(function(idea) {
     $('.card-container').prepend(buildIdeaElement(idea));
   });
 }
@@ -207,4 +191,11 @@ function downQuality(quality) {
     default:
       return quality;
   }
+}
+
+function getFilteredIdeas(searchValue) {
+  return getIdeas().filter(function(idea) {
+    return idea.title.toLowerCase().indexOf(searchValue) !== -1 ||
+           idea.body.toLowerCase().indexOf(searchValue) !== -1;
+  });
 }
