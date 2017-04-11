@@ -1,8 +1,8 @@
 // BUG: duplicates first when saved; But returns to normal after refresh
 // FIXME: no enter key functionality
-// TODO: structure js file
 // TODO: Event listener functions
 
+// ----- Setup -----
 // TODO: remove global function
 var ideaArray = []
 
@@ -11,6 +11,7 @@ $(document).ready(function() {
     prependCard()
 })
 
+// ----- Constructors -----
 // TODO: remove card constructor
 function CardObject(id, title, body) {
   this.id = id
@@ -19,6 +20,7 @@ function CardObject(id, title, body) {
   this.quality = "swill"
 }
 
+// ----- Events -----
 // TODO: make saveIdea function separate
 // TODO: remove global functionality
 $('.save-button').on('click', function() {
@@ -122,6 +124,10 @@ $('.card-container').on('blur', 'p', function() {
 $('.search-bar').on('keyup', function(event) {
   searchIdeas()
 })
+
+// ----- Event Functions -----
+
+// ----- Functions -----
 
 // FIXME: remove global variable
 function prependCard() {
