@@ -1,9 +1,17 @@
+// BUG: duplicates first when saved; But returns to normal after refresh
+// FIXME: no enter key functionality
+// TODO: structure js file
+// TODO: Event listener functions
+
+// TODO: remove global function
 var ideaArray = []
 
+// TODO: add regular function call to load on refresh/open
 $(document).ready(function() {
     prependCard()
 })
 
+// TODO: remove card constructor
 function CardObject(id, title, body) {
   this.id = id
   this.title = title
@@ -11,6 +19,8 @@ function CardObject(id, title, body) {
   this.quality = "swill"
 }
 
+// TODO: make saveIdea function separate
+// TODO: remove global functionality
 $('.save-button').on('click', function() {
   var $title = $('#title').val()
   var $body = $('#body').val()
@@ -20,14 +30,19 @@ $('.save-button').on('click', function() {
   ideaArray.push(newIdea)
   storeIdea()
   prependCard()
+  console.log(localStorage);
 })
 
+// BUG: Fix functionality
 $('#title', '.save-button').on('keyup', function(event) {
   if (event.keyCode == 13) {
     $('.save-button').click()
   }
 })
 
+// TODO: Check this parent() if better
+// TODO: change attr to prop
+// TODO: remove global variable
 $('.card-container').on('click', '.delete', function() {
   $(this).closest('.idea-card').remove()
   var cardID = $(this).closest('.idea-card').attr('id')
@@ -39,6 +54,9 @@ $('.card-container').on('click', '.delete', function() {
   storeIdea()
 })
 
+// TODO: change tag to class to target correctly
+// TODO: elminiate thisButton variable
+// TODO: make individual function
 $('.card-container').on('click', '.up-vote', function() {
   var rating = ($(this).siblings("p").children(".rating"))
   var thisButton = $(this)
@@ -56,6 +74,9 @@ $('.card-container').on('click', '.up-vote', function() {
   }
 })
 
+// TODO: change tag to class to target correctly
+// TODO: elminiate thisButton variable
+// TODO: make individual function
 $('.card-container').on('click', '.down-vote', function() {
   var rating = ($(this).siblings("p").children(".rating"))
   var thisButton = $(this)
@@ -73,6 +94,7 @@ $('.card-container').on('click', '.down-vote', function() {
   }
 })
 
+// FIXME: functionality
 $('.card-container').on('blur', 'h2', function() {
   var cardID = $(this).closest('.idea-card').attr('id')
   var h2Text = $(this).text()
@@ -84,6 +106,7 @@ $('.card-container').on('blur', 'h2', function() {
   storeIdea()
 })
 
+// FIXME: functionality
 $('.card-container').on('blur', 'p', function() {
   var cardID = $(this).closest('.idea-card').attr('id')
   var h2Body = $(this).text()
@@ -95,10 +118,12 @@ $('.card-container').on('blur', 'p', function() {
   storeIdea()
 })
 
+// FIXME: make independent function call
 $('.search-bar').on('keyup', function(event) {
   searchIdeas()
 })
 
+// FIXME: remove global variable
 function prependCard() {
   getIdeas()
   ideaArray.forEach(function(idea) {
@@ -142,6 +167,7 @@ function updateArrayQuality(thisButton, rating) {
   })
 }
 
+// TODO: separate functionality into individual functions
 function searchIdeas() {
   var searchText = $('.search-bar').val().toLowerCase()
   ideaArray.forEach( function(idea, index) {
