@@ -54,23 +54,14 @@ function upVote() {
   $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
 }
 
-// TODO: change tag to class to target correctly
-// TODO: elminiate thisButton variable
 function downVote() {
-  var rating = ($(this).siblings("p").children(".rating"))
-  var thisButton = $(this)
-  switch (rating.text()) {
-    case 'genius':
-    rating.text('plausible')
-    updateArrayQuality(thisButton, rating)
-    break;
-    case 'plausible':
-    rating.text('swill')
-    updateArrayQuality(thisButton, rating)
-    break;
-    case 'swill':
-    break
-  }
+  var ideas = getIdeas();
+  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
+  var idea = ideas[index];
+  idea.quality = downQuality(idea.quality);
+  ideas[index] = idea;
+  storeIdea(ideas);
+  $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
 }
 
 // FIXME: functionality
@@ -195,12 +186,25 @@ function getIdeas() {
 function upQuality(quality) {
   switch (quality) {
     case 'swill':
-      return 'palusible';
-    case 'palusible':
+      return 'plausible';
+    case 'plausible':
       return 'genius';
     case 'genius':
       return 'genius';
     default:
+      return quality;
+  }
+}
+
+function downQuality(quality) {
+  switch (quality) {
+    case 'swill':
       return 'swill';
+    case 'plausible':
+      return 'swill';
+    case 'genius':
+      return 'plausible';
+    default:
+      return quality;
   }
 }
