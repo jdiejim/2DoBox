@@ -40,5 +40,6 @@ Workflow Expectations (Git workflow/Tools/Code Review/Reviewing Pull Requests):
 Expectations for giving and receiving feedback:
 * Check in once a day each morning.
 * Provide honest constructive feedback.
+* Be kind and respectful.
 
 Tools: We'll be using Trello to manage tasks for this project.
