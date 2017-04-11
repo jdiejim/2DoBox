@@ -7,12 +7,11 @@ var ideaArray = []
 prependIdeas()
 
 // ----- Classes -----
-function CardObject(inputs) {
+function Idea(inputs) {
   this.title = inputs.title;
   this.body = inputs.body;
   this.id = inputs.id;
   this.quality = "swill";
-  this.element = '';
 }
 
 // ----- Events Listeners -----
@@ -27,11 +26,10 @@ $('.card-container').on('click', '.delete', deleteIdea)
 
 // ----- Event Functions -----
 function saveIdea() {
-  var idea = new CardObject(getInputs());
-  idea.element = buildIdeaElement(idea);
+  var idea = new Idea(getInputs());
   storeIdea(pushToIdeas(idea));
-  prependIdeas()
-  clearInputs()
+  prependIdeas();
+  clearInputs();
 }
 
 // BUG: Fix functionality
@@ -49,7 +47,7 @@ function deleteIdea() {
 // TODO: change tag to class to target correctly
 // TODO: elminiate thisButton variable
 function upVote() {
-  var rating = $(this).siblings('.idea-quality').find(".rating"));
+  var rating = $(this).siblings('.idea-quality').find(".rating");
   var thisButton = $(this)
   switch (rating.text()) {
     case 'swill':
@@ -137,15 +135,14 @@ function searchIdeas() {
 function prependIdeas() {
   $('.card-container').html('');
   getIdeas().forEach(function(idea) {
-    $('.card-container').prepend(idea.element);
+    $('.card-container').prepend(buildIdeaElement(idea));
   });
 }
 
 function getInputs() {
   return {  title: $('#title').val(),
             body: $('#body').val(),
-            id: Date.now()
-          }
+            id: Date.now() };
 }
 
 function pushToIdeas(idea) {
