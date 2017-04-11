@@ -1,4 +1,4 @@
-// BUG: duplicates first when saved; But returns to normal after refresh
+// TODO: button validation
 
 // ----- Setup -----
 // TODO: remove global function
@@ -21,8 +21,8 @@ $('.search-bar').on('keyup', searchIdeas)
 $('.card-container').on('click', '.delete', deleteIdea)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
-                    .on('blur', 'h2', editableTitle)
-                    .on('blur', 'p', editableBody);
+                    .on('blur', '.title', updateTitle)
+                    .on('blur', '.body', updateBody);
 
 // ----- Event Functions -----
 function saveIdea() {
@@ -64,28 +64,24 @@ function downVote() {
   $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
 }
 
-// FIXME: functionality
-function editableTitle() {
-  var cardID = $(this).closest('.idea-card').attr('id')
-  var h2Text = $(this).text()
-  ideaArray.forEach(function(idea) {
-    if (cardID == idea.id) {
-      idea.title = h2Text
-    }
-  })
-  storeIdea()
+function updateTitle() {
+  var ideas = getIdeas();
+  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
+  var idea = ideas[index];
+  idea.title = $(this).text();
+  ideas[index] = idea;
+  storeIdea(ideas);
+  $(this).parent().replaceWith(buildIdeaElement(idea));
 }
 
-// FIXME: functionality
-function editableBody() {
-  var cardID = $(this).closest('.idea-card').attr('id')
-  var h2Body = $(this).text()
-  ideaArray.forEach(function(idea) {
-    if (cardID == idea.id) {
-      idea.body = h2Body
-    }
-  })
-  storeIdea()
+function updateBody() {
+  var ideas = getIdeas();
+  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
+  var idea = ideas[index];
+  idea.body = $(this).text();
+  ideas[index] = idea;
+  storeIdea(ideas);
+  $(this).parent().replaceWith(buildIdeaElement(idea));
 }
 
 function searchIdeas() {
@@ -135,8 +131,8 @@ function removeFromIdeas(id) {
 function buildIdeaElement(idea) {
   return `<article class="idea-card" id="${idea.id}">
             <button type="button" class="delete"></button>
-            <h2 contenteditable="true">${idea.title}</h2>
-            <p contenteditable="true">${idea.body}</p>
+            <h2 contenteditable="true" class="title">${idea.title}</h2>
+            <p contenteditable="true" class="body">${idea.body}</p>
             <div class="quality-container">
               <button type="button" class="up-vote"></button>
               <button type="button" class="down-vote"></button>
