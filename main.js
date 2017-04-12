@@ -1,8 +1,9 @@
 // TODO: ask if filter should be label
 // TODO: add redo
+// TODO: add error mesage to char input
 
 // ----- Setup -----
-prependTodos(getPendingTodos());
+prependNthsTodos(getPendingTodos(), 10);
 validateSaveButton();
 
 // ----- Classes -----
@@ -20,6 +21,7 @@ $('.save-button').on('click', saveTodo);
 $('.save-button').on('keyup', saveTodo);
 $('.inputs').on('keyup', validateSaveButton);
 $('.search-bar').on('keyup', searchTodos);
+$('#show-more').on('click', showMore)
 $('.show-completed-btn').on('click', showCompletedTodos);
 $('.importance').on('click', '.importance-btn', filterByImportance);
 $('.card-container').on('click', '.delete', deleteTodo)
@@ -31,7 +33,8 @@ $('.card-container').on('click', '.delete', deleteTodo)
                     .on('click', '.completed-btn', completeTask);
 
 // ----- Event Functions -----
-function saveTodo() {
+function saveTodo(e) {
+  e.preventDefault();
   var todo = new Todo(getInputs());
   storeTodo(pushToTodos(todo));
   prependTodos(getPendingTodos());
@@ -120,6 +123,18 @@ function prependTodos(todos) {
   todos.forEach(function(todo) {
     $('.card-container').prepend(buildTodoElement(todo));
   });
+}
+
+function prependNthsTodos(todos, num) {
+  $('.card-container').html('');
+  var start = todos.length - num;
+  if (start > 0) {
+    for (var i = start; i < todos.length; i++) {
+      $('.card-container').prepend(buildTodoElement(todos[i]));
+    }
+  } else {
+    prependTodos(todos);
+  }
 }
 
 function getInputs() {
@@ -244,5 +259,16 @@ function showCompletedTodos() {
   } else {
     $(this).text('Completed');
     prependTodos(getPendingTodos());
+  }
+}
+
+function showMore() {
+  console.log($(this).text());
+  if ($(this).text() === 'Show more TODOs ...') {
+    $(this).text('Show less TODOs ...');
+    prependTodos(getPendingTodos());
+  } else {
+    $(this).text('Show more TODOs ...');
+    prependNthsTodos(getPendingTodos(), 10);
   }
 }
