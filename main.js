@@ -1,7 +1,8 @@
-// TODO: button validation
+// TODO: enter key functionality for save
 
 // ----- Setup -----
 prependIdeas(getIdeas());
+validateSaveButton();
 
 // ----- Classes -----
 function Idea(inputs) {
@@ -13,7 +14,9 @@ function Idea(inputs) {
 
 // ----- Events Listeners -----
 $('.save-button').on('click', saveIdea);
-$('.search-bar').on('keyup', searchIdeas)
+$('.save-button').on('keyup', saveIdea);
+$('.inputs').on('click', validateSaveButton);
+$('.search-bar').on('keyup', searchIdeas);
 $('.card-container').on('click', '.delete', deleteIdea)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
@@ -29,11 +32,6 @@ function saveIdea() {
   clearInputs();
 }
 
-function enterKeyBlur(e) {
-  if (e.which === 13) {
-    $(e.target).blur();
-  }
-}
 
 function deleteIdea() {
   storeIdea(removeFromIdeas($(this).parent().prop('id')))
@@ -58,6 +56,12 @@ function downVote() {
   ideas[index] = idea;
   storeIdea(ideas);
   $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
+}
+
+function enterKeyBlur(e) {
+  if (e.which === 13) {
+    $(e.target).blur();
+  }
 }
 
 function updateTitle() {
@@ -90,6 +94,16 @@ function searchIdeas() {
 }
 
 // ----- Functions -----
+function getIdeas() {
+  try {
+    JSON.parse(localStorage.getItem('ideas'));
+  }
+  catch(err) {
+    storeIdea([]);
+  }
+  return JSON.parse(localStorage.getItem('ideas'));
+}
+
 function prependIdeas(ideas) {
   $('.card-container').html('');
   ideas.forEach(function(idea) {
@@ -149,16 +163,6 @@ function storeIdea(array) {
   localStorage.setItem('ideas', JSON.stringify(array));
 }
 
-function getIdeas() {
-  try {
-    JSON.parse(localStorage.getItem('ideas'));
-  }
-  catch(err) {
-    storeIdea([]);
-  }
-  return JSON.parse(localStorage.getItem('ideas'));
-}
-
 function upQuality(quality) {
   switch (quality) {
     case 'swill':
@@ -190,4 +194,12 @@ function getFilteredIdeas(searchValue) {
     return idea.title.toLowerCase().indexOf(searchValue) !== -1 ||
            idea.body.toLowerCase().indexOf(searchValue) !== -1;
   });
+}
+
+function validateSaveButton() {
+  if ($('#title').val() !== "" && $('#body').val() !== "") {
+    $('.save-button').prop('disabled', false);
+  } else {
+    $('.save-button').prop('disabled', true);
+  }
 }
