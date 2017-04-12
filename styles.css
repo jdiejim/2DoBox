@@ -3,15 +3,13 @@
 }
 
 body {
+  width: 100%;
+  height: 100%;
   color: #939598;
   font-family: 'Open Sans', sans-serif;
 }
 
 header {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-around;
   width: 100%;
   height: 180px;
   background-color: #212121;
@@ -22,9 +20,12 @@ main {
 }
 
 h1 {
+  width: 450px;
+  margin: 0 auto 10px;;
   color: #00a79d;
   font-family: 'Roboto Slab', serif;
   font-size: 40px;
+  text-align: center;
 }
 
 button {
@@ -51,7 +52,7 @@ button:focus {
   justify-content: center;
   height: 105px;
   width: 450px;
-  padding: 4px 0px 30px;
+  margin: 0 auto;
   background-color: white;
 }
 
@@ -127,6 +128,24 @@ button:focus {
 }
 
 /*----- Main -----*/
+.importance {
+  display: flex;
+  justify-content: space-between;
+  width: 450px;
+  height: 40px;
+  margin: 5px auto;
+}
+
+.importance-btn {
+  width: 20%;
+  height: 25px;
+  margin: 0 5px;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
 .filter-container {
   display: flex;
   justify-content: space-between;
@@ -135,6 +154,7 @@ button:focus {
   height: 40px;
   margin: 0 auto 10px;
 }
+
 .inputFilter {
   width: 78%;
   padding-left: 10px;
@@ -254,24 +274,6 @@ button:focus {
   background-size: cover;
 }
 
-.importance {
-  display: flex;
-  justify-content: space-between;
-  width: 450px;
-  height: 40px;
-  margin: 5px auto;
-}
-
-.importance-btn {
-  width: 20%;
-  height: 25px;
-  margin: 0 5px;
-  background: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
 .show-more-btn {
   display: block;
   width: 450px;
@@ -304,4 +306,68 @@ button:focus {
 #None {
   background-color: #373737;
   color: white;
+}
+
+/*----- Media Queries -----*/
+@media screen and (max-width: 550px) {
+  h1 {
+    width: 350px;
+  }
+  .inputs {
+    width: 350px;
+  }
+  .text-inputs {
+    width: 80%;
+  }
+  .importance {
+    width: 350px;
+  }
+  .filter-container {
+    width: 350px;
+  }
+  .todos-count {
+    width: 350px;
+  }
+  .completed-btn {
+    font-size: 10px;
+  }
+  .todo-card {
+    min-width: 350px;
+    max-width: 350px;
+  }
+}
+.show-more-btn {
+  width: 350px;
+}
+
+@media screen and (max-width: 430px) {
+  h1 {
+    width: 300px;
+  }
+  .inputs {
+    width: 300px;
+  }
+  .save-button {
+    width: 40px;
+    height: 40px;
+  }
+  .text-inputs {
+    width: 80%;
+  }
+  .importance {
+    width: 300px;
+  }
+  .filter-container {
+    width: 300px;
+  }
+  .todos-count {
+    width: 300px;
+  }
+  .todo-card {
+    min-width: 300px;
+    max-width: 300px;
+  }
+  .show-more-btn {
+    width: 300px;
+  }
 }

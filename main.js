@@ -42,6 +42,7 @@ function saveTodo(e) {
 
 function deleteTodo() {
   storeTodo(removeFromTodos($(this).parent().prop('id')))
+  updateCountTodos();
   $(this).parent().remove()
 }
 
