@@ -8,30 +8,30 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">  </head>
   <body>
-    <header>
-      <h1 role="banner">2Do<span class="header">box</span></h1>
-    </header>
-    <form class="inputs">
-      <label for="title"></label>
-      <input role="title-text-box" type="text" id="title" name="title" placeholder="Title">
-      <input role="task-text-box" type="text" id="task" name="task" placeholder="task">
-      <button role="button" class="save-button" type="submit" name="button">save</button>
+    <header role="header">
+      <h1 role="banner">2Do<span class="banner">box</span></h1>
+    <form role="input todo form" class="inputs">
+      <input role="input title box" type="text" id="inputTitle" name="title" placeholder="Title">
+      <input role="input task box" type="text" id="inputTask" name="task" placeholder="Task">
+      <button role="save button" class="save-button" type="submit" name="save">save</button>
     </form>
-    <section class="importance">
-      <button class="importance-btn" id="Any" type="button" name="button">Any</button>
-      <button class="importance-btn" id="Critical" type="button" name="button">Critical</button>
-      <button class="importance-btn" id="High" type="button" name="button">High</button>
-      <button class="importance-btn" id="Normal" type="button" name="button">Normal</button>
-      <button class="importance-btn" id="Low" type="button" name="button">Low</button>
-      <button class="importance-btn" id="None" type="button" name="button">None</button>
-    </section>
-    <button class="show-completed-btn" type="button" name="button">Completed</button>
-    <section class="search-container">
-      <label for="search"></label>
-      <input role="search" class="search-bar" id="search" type="text" name="search" placeholder="Filter">
-    </section>
-    <main class="card-container"></main>
-    <button id="show-more" type="button" name="button">Show more TODOs ...</button>
+    </header>
+    <main role="main">
+      <section role="importance buttons" class="importance">
+        <button class="importance-btn" id="Any" type="button" name="Any">Any</button>
+        <button class="importance-btn" id="Critical" type="button" name="Critical">Critical</button>
+        <button class="importance-btn" id="High" type="button" name="High">High</button>
+        <button class="importance-btn" id="Normal" type="button" name="Normal">Normal</button>
+        <button class="importance-btn" id="Low" type="button" name="Low">Low</button>
+        <button class="importance-btn" id="None" type="button" name="None">None</button>
+        <button class="completed-btn" type="button" name="Completed">Completed</button>
+      </section>
+      <section class="filter-container">
+        <input role="filter todos" class="inputFilter" id="filter" type="text" name="filter" placeholder="Filter">
+      </section>
+      <section class="todo-container"></section>
+      <button class="show-more-btn" type="button" name="button">Show more TODOs ...</button>
+    </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="main.js" type="text/javascript"></script>
   </body>

@@ -20,11 +20,11 @@ function Todo(inputs) {
 $('.save-button').on('click', saveTodo);
 $('.save-button').on('keyup', saveTodo);
 $('.inputs').on('keyup', validateSaveButton);
-$('.search-bar').on('keyup', searchTodos);
-$('#show-more').on('click', showMore)
-$('.show-completed-btn').on('click', showCompletedTodos);
+$('.inputFilter').on('keyup', filterTodos);
+$('.show-more-btn').on('click', showMoreTodos)
+$('.completed-btn').on('click', showCompletedTodos);
 $('.importance').on('click', '.importance-btn', filterByImportance);
-$('.card-container').on('click', '.delete', deleteTodo)
+$('.todo-container').on('click', '.delete', deleteTodo)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
                     .on('focusout', '.title', updateTitle)
@@ -40,7 +40,6 @@ function saveTodo(e) {
   prependTodos(getPendingTodos());
   clearInputs();
 }
-
 
 function deleteTodo() {
   storeTodo(removeFromTodos($(this).parent().prop('id')))
@@ -101,10 +100,10 @@ function updateTask() {
   $(this).parent().replaceWith(buildTodoElement(todo));
 }
 
-function searchTodos() {
-  var searchValue = $(this).val().toLowerCase();
-  if (searchValue !== '') {
-    prependTodos(getFilteredTodos(searchValue));
+function filterTodos() {
+  var filterValue = $(this).val().toLowerCase();
+  if (filterValue !== '') {
+    prependTodos(getFilteredTodos(filterValue));
   } else {
     prependTodos(getTodos());
   }
@@ -119,18 +118,18 @@ function getTodos() {
 }
 
 function prependTodos(todos) {
-  $('.card-container').html('');
+  $('.todo-container').html('');
   todos.forEach(function(todo) {
-    $('.card-container').prepend(buildTodoElement(todo));
+    $('.todo-container').prepend(buildTodoElement(todo));
   });
 }
 
 function prependNthsTodos(todos, num) {
-  $('.card-container').html('');
+  $('.todo-container').html('');
   var start = todos.length - num;
   if (start > 0) {
     for (var i = start; i < todos.length; i++) {
-      $('.card-container').prepend(buildTodoElement(todos[i]));
+      $('.todo-container').prepend(buildTodoElement(todos[i]));
     }
   } else {
     prependTodos(todos);
@@ -138,8 +137,8 @@ function prependNthsTodos(todos, num) {
 }
 
 function getInputs() {
-  return {  title: $('#title').val(),
-            task: $('#task').val(),
+  return {  title: $('#inputTitle').val(),
+            task: $('#inputTask').val(),
             id: Date.now() };
 }
 
@@ -186,8 +185,8 @@ function buildTodoElement(todo) {
 }
 
 function clearInputs() {
-  $('#title').val('')
-  $('#task').val('')
+  $('#inputTitle').val('')
+  $('#inputTask').val('')
 }
 
 function storeTodo(array) {
@@ -199,16 +198,16 @@ function upQuality(level) {
   return levels[level];
 }
 
-function getFilteredTodos(searchValue) {
+function getFilteredTodos(filterValue) {
   return getTodos().filter(function(todo) {
-    return todo.title.toLowerCase().indexOf(searchValue) !== -1 ||
-           todo.task.toLowerCase().indexOf(searchValue) !== -1;
+    return todo.title.toLowerCase().indexOf(filterValue) !== -1 ||
+           todo.task.toLowerCase().indexOf(filterValue) !== -1;
   });
 }
 
 function validateSaveButton() {
   var maxLength = 120;
-  if ($('#title').val() !== "" && $('#task').val() !== "" && $('#title').val().length < maxLength && $('#task').val().length < maxLength) {
+  if ($('#inputTitle').val() !== "" && $('#inputTask').val() !== "" && $('#inputTitle').val().length < maxLength && $('#inputTask').val().length < maxLength) {
     $('.save-button').prop('disabled', false);
   } else {
     $('.save-button').prop('disabled', true);
@@ -262,8 +261,7 @@ function showCompletedTodos() {
   }
 }
 
-function showMore() {
-  console.log($(this).text());
+function showMoreTodos() {
   if ($(this).text() === 'Show more TODOs ...') {
     $(this).text('Show less TODOs ...');
     prependTodos(getPendingTodos());

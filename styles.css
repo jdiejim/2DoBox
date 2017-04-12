@@ -34,7 +34,7 @@ h2 {
   font-size: 22px;
 }
 
-.header {
+.banner {
   color: #6d6e71;
 }
 
@@ -76,14 +76,14 @@ input {
   border: 1px solid #A9A9A9;
 }
 
-.card-container {
+.todo-container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
-.search-container {
+.filter-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -185,7 +185,7 @@ p {
   height: 40vh;
 }
 
-.header {
+.banner {
   padding: 30px 0;
 }
 
