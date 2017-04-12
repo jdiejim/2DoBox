@@ -35,7 +35,7 @@ function saveTodo(e) {
   e.preventDefault();
   var todo = new Todo(getInputs());
   storeTodo(pushToTodos(todo));
-  prependTodos(getPendingTodos());
+  prependNthsTodos(getPendingTodos(), 10);
   clearInputs();
 }
 
