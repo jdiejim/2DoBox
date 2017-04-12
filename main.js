@@ -1,5 +1,3 @@
-// TODO: ask if filter should be label
-// TODO: add redo
 // TODO: add error mesage to char input
 
 // ----- Setup -----
@@ -30,7 +28,7 @@ $('.todo-container').on('click', '.delete', deleteTodo)
                     .on('focusout', '.title', updateTitle)
                     .on('focusout', '.task', updateTask)
                     .on('keyup', enterKeyBlur)
-                    .on('click', '.completed-btn', completeTask);
+                    .on('click', '#completed-btn', markedTodo);
 
 // ----- Event Functions -----
 function saveTodo(e) {
@@ -168,7 +166,7 @@ function buildTodoElement(todo) {
   if (todo.completed) {
     state = 'completed';
   }
-  return `<article class="todo-card ${state + '-card'}" id="${todo.id}">
+  return `<article class="todo-card ${state + 'card'}" id="${todo.id}">
             <button type="button" class="delete"></button>
             <h2 contenteditable="true" class="title">${todo.title}</h2>
             <p contenteditable="true" class="task">${todo.task}</p>
@@ -180,7 +178,7 @@ function buildTodoElement(todo) {
                 <span class="rating">${todo.importance}</span>
               </p>
               </div>
-              <button type="button" class="completed-btn ${state}">Completed Task</button>
+              <button id="completed-btn" type="button" class="${state}">Completed Task</button>
           </article>`
 }
 
@@ -229,14 +227,35 @@ function filterByImportance() {
   }
 }
 
-function completeTask() {
+function markedTodo() {
+  console.log($(this).prop('id'));
+  if ($(this).prop('class') === '') {
+    completeTask($(this));
+  } else {
+    redoTask($(this));
+  }
+}
+
+function completeTask($btn) {
   var todos = getTodos();
-  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var index = getTodoIndex($btn.parents('.todo-card').prop('id'));
   var todo = todos[index];
   todo.completed = true;
+  console.log(todo.completed);
   todos[index] = todo;
   storeTodo(todos);
-  $(this).parent().replaceWith(buildTodoElement(todo));
+  $btn.parent().replaceWith(buildTodoElement(todo));
+}
+
+function redoTask($btn) {
+  var todos = getTodos();
+  var index = getTodoIndex($btn.parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.completed = false;
+  console.log(todo.completed);
+  todos[index] = todo;
+  storeTodo(todos);
+  $btn.parent().replaceWith(buildTodoElement(todo));
 }
 
 function getCompletedTodos() {
