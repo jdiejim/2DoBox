@@ -1,59 +1,59 @@
 // ----- Setup -----
-prependIdeas(getIdeas());
+prependTodos(getTodos());
 validateSaveButton();
 
 // ----- Classes -----
-function Idea(inputs) {
+function Todo(inputs) {
   this.title = inputs.title;
-  this.body = inputs.body;
+  this.task = inputs.task;
   this.id = inputs.id;
   this.quality = "swill";
 }
 
 // ----- Events Listeners -----
-$('.save-button').on('click', saveIdea);
-$('.save-button').on('keyup', saveIdea);
+$('.save-button').on('click', saveTodo);
+$('.save-button').on('keyup', saveTodo);
 $('.inputs').on('keyup', validateSaveButton);
-$('.search-bar').on('keyup', searchIdeas);
-$('.card-container').on('click', '.delete', deleteIdea)
+$('.search-bar').on('keyup', searchTodos);
+$('.card-container').on('click', '.delete', deleteTodo)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
                     .on('focusout', '.title', updateTitle)
-                    .on('focusout', '.body', updateBody)
+                    .on('focusout', '.task', updateTask)
                     .on('keyup', enterKeyBlur);
 
 // ----- Event Functions -----
-function saveIdea() {
-  var idea = new Idea(getInputs());
-  storeIdea(pushToIdeas(idea));
-  prependIdeas(getIdeas());
+function saveTodo() {
+  var todo = new Todo(getInputs());
+  storeTodo(pushToTodos(todo));
+  prependTodos(getTodos());
   clearInputs();
 }
 
 
-function deleteIdea() {
-  storeIdea(removeFromIdeas($(this).parent().prop('id')))
+function deleteTodo() {
+  storeTodo(removeFromTodos($(this).parent().prop('id')))
   $(this).parent().remove()
 }
 
 function upVote() {
-  var ideas = getIdeas();
-  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
-  var idea = ideas[index];
-  idea.quality = upQuality(idea.quality);
-  ideas[index] = idea;
-  storeIdea(ideas);
-  $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
+  var todos = getTodos();
+  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.quality = upQuality(todo.quality);
+  todos[index] = todo;
+  storeTodo(todos);
+  $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
 }
 
 function downVote() {
-  var ideas = getIdeas();
-  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
-  var idea = ideas[index];
-  idea.quality = downQuality(idea.quality);
-  ideas[index] = idea;
-  storeIdea(ideas);
-  $(this).parents('.idea-card').replaceWith(buildIdeaElement(idea));
+  var todos = getTodos();
+  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.quality = downQuality(todo.quality);
+  todos[index] = todo;
+  storeTodo(todos);
+  $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
 }
 
 function enterKeyBlur(e) {
@@ -63,87 +63,87 @@ function enterKeyBlur(e) {
 }
 
 function updateTitle() {
-  var ideas = getIdeas();
-  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
-  var idea = ideas[index];
-  idea.title = $(this).text();
-  ideas[index] = idea;
-  storeIdea(ideas);
-  $(this).parent().replaceWith(buildIdeaElement(idea));
+  var todos = getTodos();
+  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.title = $(this).text();
+  todos[index] = todo;
+  storeTodo(todos);
+  $(this).parent().replaceWith(buildTodoElement(todo));
 }
 
-function updateBody() {
-  var ideas = getIdeas();
-  var index = getIdeaIndex($(this).parents('.idea-card').prop('id'));
-  var idea = ideas[index];
-  idea.body = $(this).text();
-  ideas[index] = idea;
-  storeIdea(ideas);
-  $(this).parent().replaceWith(buildIdeaElement(idea));
+function updateTask() {
+  var todos = getTodos();
+  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.task = $(this).text();
+  todos[index] = todo;
+  storeTodo(todos);
+  $(this).parent().replaceWith(buildTodoElement(todo));
 }
 
-function searchIdeas() {
+function searchTodos() {
   var searchValue = $(this).val().toLowerCase();
   if (searchValue !== '') {
-    prependIdeas(getFilteredIdeas(searchValue));
+    prependTodos(getFilteredTodos(searchValue));
   } else {
-    prependIdeas(getIdeas());
+    prependTodos(getTodos());
   }
 }
 
 // ----- Functions -----
-function getIdeas() {
-  if (!JSON.parse(localStorage.getItem('ideas'))) {
-    storeIdea([]);
+function getTodos() {
+  if (!JSON.parse(localStorage.getItem('todos'))) {
+    storeTodo([]);
   }
-  return JSON.parse(localStorage.getItem('ideas'));
+  return JSON.parse(localStorage.getItem('todos'));
 }
 
-function prependIdeas(ideas) {
+function prependTodos(todos) {
   $('.card-container').html('');
-  ideas.forEach(function(idea) {
-    $('.card-container').prepend(buildIdeaElement(idea));
+  todos.forEach(function(todo) {
+    $('.card-container').prepend(buildTodoElement(todo));
   });
 }
 
 function getInputs() {
   return {  title: $('#title').val(),
-            body: $('#body').val(),
+            task: $('#task').val(),
             id: Date.now() };
 }
 
-function pushToIdeas(idea) {
-  var ideas = getIdeas();
-  ideas.push(idea);
-  return ideas;
+function pushToTodos(todo) {
+  var todos = getTodos();
+  todos.push(todo);
+  return todos;
 }
 
-function getIdeaIndex(id) {
-  var ideas = getIdeas();
-  return ideas.map(getIdeaId).indexOf(parseInt(id));
+function getTodoIndex(id) {
+  var todos = getTodos();
+  return todos.map(getTodoId).indexOf(parseInt(id));
 }
 
-function getIdeaId(idea) {
-  return idea.id;
+function getTodoId(todo) {
+  return todo.id;
 }
 
-function removeFromIdeas(id) {
-  var ideas = getIdeas();
-  ideas.splice(getIdeaIndex(id), 1);
-  return ideas;
+function removeFromTodos(id) {
+  var todos = getTodos();
+  todos.splice(getTodoIndex(id), 1);
+  return todos;
 }
 
-function buildIdeaElement(idea) {
-  return `<article class="idea-card" id="${idea.id}">
+function buildTodoElement(todo) {
+  return `<article class="todo-card" id="${todo.id}">
             <button type="button" class="delete"></button>
-            <h2 contenteditable="true" class="title">${idea.title}</h2>
-            <p contenteditable="true" class="body">${idea.body}</p>
+            <h2 contenteditable="true" class="title">${todo.title}</h2>
+            <p contenteditable="true" class="task">${todo.task}</p>
             <div class="quality-container">
               <button type="button" class="up-vote"></button>
               <button type="button" class="down-vote"></button>
-              <p class="idea-quality">
+              <p class="todo-quality">
                 <span class="quality-font">quality: </span>
-                <span class="rating">${idea.quality}</span>
+                <span class="rating">${todo.quality}</span>
               </p>
               </div>
           </article>`
@@ -151,11 +151,11 @@ function buildIdeaElement(idea) {
 
 function clearInputs() {
   $('#title').val('')
-  $('#body').val('')
+  $('#task').val('')
 }
 
-function storeIdea(array) {
-  localStorage.setItem('ideas', JSON.stringify(array));
+function storeTodo(array) {
+  localStorage.setItem('todos', JSON.stringify(array));
 }
 
 function upQuality(quality) {
@@ -184,15 +184,15 @@ function downQuality(quality) {
   }
 }
 
-function getFilteredIdeas(searchValue) {
-  return getIdeas().filter(function(idea) {
-    return idea.title.toLowerCase().indexOf(searchValue) !== -1 ||
-           idea.body.toLowerCase().indexOf(searchValue) !== -1;
+function getFilteredTodos(searchValue) {
+  return getTodos().filter(function(todo) {
+    return todo.title.toLowerCase().indexOf(searchValue) !== -1 ||
+           todo.task.toLowerCase().indexOf(searchValue) !== -1;
   });
 }
 
 function validateSaveButton() {
-  if ($('#title').val() !== "" && $('#body').val() !== "") {
+  if ($('#title').val() !== "" && $('#task').val() !== "") {
     $('.save-button').prop('disabled', false);
   } else {
     $('.save-button').prop('disabled', true);
