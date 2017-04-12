@@ -47,10 +47,10 @@ main {
 
 .inputs {
   display: flex;
-  height: 100px;
+  height: 105px;
   width: 450px;
   padding-bottom: 30px;
-  background-color: #CAC8C9;
+  background-color: white;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
@@ -270,7 +270,7 @@ button:focus {
 
 
 .completed-card {
-  text-decoration: line-through;
+  /*text-decoration: line-through;*/
   opacity: 0.5;
 }
 .completed-card .title {
@@ -352,6 +352,14 @@ button:focus {
   border-radius: 10px;
   background-color: #5e9aff;
   font-size: 14px;
+}
+.char-erro-msg {
+  font-size: 12px;
+}
+
+.todos-count {
+  width: 450px;
+  margin: 0 auto 10px;
 }
 
 /*media queries*/

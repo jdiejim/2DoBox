@@ -2,6 +2,7 @@
 
 // ----- Setup -----
 prependNthsTodos(getPendingTodos(), 10);
+updateCountTodos();
 validateSaveButton();
 
 // ----- Classes -----
@@ -36,6 +37,7 @@ function saveTodo(e) {
   var todo = new Todo(getInputs());
   storeTodo(pushToTodos(todo));
   prependNthsTodos(getPendingTodos(), 10);
+  updateCountTodos();
   clearInputs();
   validateSaveButton();
 }
@@ -208,10 +210,21 @@ function validateSaveButton() {
   var maxLength = 120;
   if ($('#inputTitle').val() !== "" && $('#inputTask').val() !== "" && $('#inputTitle').val().length < maxLength && $('#inputTask').val().length < maxLength) {
     $('.save-button').prop('disabled', false);
+    $('.char-erro-msg').text(charErrorMessage($('#inputTitle').val().length, $('#inputTask').val().length, maxLength));
   } else {
     $('.save-button').prop('disabled', true);
+    $('.char-erro-msg').text(charErrorMessage($('#inputTitle').val().length, $('#inputTask').val().length, maxLength));
   }
 }
+
+function charErrorMessage(num1, num2,  limit) {
+  if (num1 > limit || num2 > limit) {
+    return 'Reached character limit of 120';
+  } else {
+    return '';
+  }
+}
+
 
 function getFilteredByImportance(importance) {
   return getTodos().filter(function(todo) {
@@ -229,12 +242,12 @@ function filterByImportance() {
 }
 
 function markedTodo() {
-  console.log($(this).prop('id'));
   if ($(this).prop('class') === '') {
     completeTask($(this));
   } else {
     redoTask($(this));
   }
+  updateCountTodos();
 }
 
 function completeTask($btn) {
@@ -288,4 +301,8 @@ function showMoreTodos() {
     $(this).text('Show more TODOs ...');
     prependNthsTodos(getPendingTodos(), 10);
   }
+}
+
+function updateCountTodos() {
+  $('.todos-count').text('Pending: ' + getPendingTodos().length);
 }
