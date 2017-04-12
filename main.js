@@ -1,5 +1,3 @@
-// TODO: enter key functionality for save
-
 // ----- Setup -----
 prependIdeas(getIdeas());
 validateSaveButton();
@@ -15,7 +13,7 @@ function Idea(inputs) {
 // ----- Events Listeners -----
 $('.save-button').on('click', saveIdea);
 $('.save-button').on('keyup', saveIdea);
-$('.inputs').on('click', validateSaveButton);
+$('.inputs').on('keyup', validateSaveButton);
 $('.search-bar').on('keyup', searchIdeas);
 $('.card-container').on('click', '.delete', deleteIdea)
                     .on('click', '.up-vote', upVote)
