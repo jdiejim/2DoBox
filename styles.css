@@ -278,7 +278,7 @@ button:focus {
   display: block;
   width: 450px;
   height: 30px;
-  margin: 0 auto;
+  margin: 5px auto;
   background: none;
   background-color: #00ccd2;
   border-radius: 10px;
@@ -335,9 +335,9 @@ button:focus {
     min-width: 350px;
     max-width: 350px;
   }
-}
-.show-more-btn {
-  width: 350px;
+  .show-more-btn {
+    width: 350px;
+  }
 }
 
 @media screen and (max-width: 430px) {
