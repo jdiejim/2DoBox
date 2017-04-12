@@ -136,12 +136,7 @@ main {
   flex-direction: column;
 }
 
-.filter-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 30px;
-}
+
 
 .todo-card {
   min-width: 450px;
@@ -292,6 +287,71 @@ button:focus {
   border-radius: 10px;
   height: 30px;
   font-size: 18px;
+}
+.importance {
+  width: 450px;
+  height: 40px;
+  margin: 5px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.importance-btn {
+  background: none;
+  /*border: 1px solid black;*/
+  width: 20%;
+  height: 25px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+#Any {
+  background-color: salmon;
+}
+#Critical {
+  background-color: #ff5e5e;
+}
+#High {
+  background-color: #ffd25e;
+}
+#Normal {
+  background-color: #5effcf;
+}
+#Low {
+  background-color: #5e9aff;
+  color: white;
+}
+#None {
+  background-color: #373737;
+  color: white;
+}
+
+.filter-container {
+  width: 450px;
+  margin: 0 auto;
+  /*height: 30px;*/
+  display: flex;
+  height: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+.inputFilter {
+  width: 78%;
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.completed-btn {
+  color: white;
+  width: 20%;
+  height: 30px;
+  background: none;
+  border-radius: 10px;
+  background-color: #5e9aff;
+  font-size: 14px;
 }
 
 /*media queries*/
