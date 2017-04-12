@@ -192,7 +192,8 @@ function getFilteredTodos(searchValue) {
 }
 
 function validateSaveButton() {
-  if ($('#title').val() !== "" && $('#task').val() !== "") {
+  var maxLength = 120;
+  if ($('#title').val() !== "" && $('#task').val() !== "" && $('#title').val().length < maxLength && $('#task').val().length < maxLength) {
     $('.save-button').prop('disabled', false);
   } else {
     $('.save-button').prop('disabled', true);
