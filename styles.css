@@ -162,6 +162,14 @@ p {
   color: #6d6e71;
 }
 
+.completed {
+  background-color: #40b063;
+}
+.completed-card {
+  color: red;
+}
+
+
 /*media queries*/
 
 @media (max-width: 700px) {
