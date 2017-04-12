@@ -64,7 +64,6 @@ h2 {
 
 
 input,
-textarea,
 .save-button {
   max-width: 750px;
   width: 60%;
@@ -73,13 +72,8 @@ textarea,
   font-size: 24px;
 }
 
-input,
-textarea {
+input {
   border: 1px solid #A9A9A9;
-}
-
-textarea {
-  resize: none;
 }
 
 .card-container {
@@ -96,7 +90,7 @@ textarea {
   padding-top: 30px;
 }
 
-.idea-card {
+.todo-card {
   max-width: 750px;
   width: 60%;
   border-bottom: 1px solid #d1d3d4;
@@ -158,7 +152,7 @@ p {
   width: 210px;
 }
 
-.idea-quality {
+.todo-quality {
   display: inline;
   padding-top: 2px;
 }
@@ -172,9 +166,8 @@ p {
 
 @media (max-width: 700px) {
  input,
- textarea,
  .save-button,
- .idea-card {
+ .todo-card {
    width: 85%;
  }
 }
@@ -188,7 +181,7 @@ p {
   padding: 30px 0;
 }
 
-#body {
+#task {
    height: 120px;
  }
 }
