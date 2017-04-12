@@ -1,7 +1,8 @@
 // TODO: ask if filter should be label
+// TODO: add redo
 
 // ----- Setup -----
-prependTodos(getTodos());
+prependTodos(getPendingTodos());
 validateSaveButton();
 
 // ----- Classes -----
@@ -11,6 +12,7 @@ function Todo(inputs) {
   this.id = inputs.id;
   this.importance = "Normal";
   this.level = 2;
+  this.completed = false;
 }
 
 // ----- Events Listeners -----
@@ -18,19 +20,21 @@ $('.save-button').on('click', saveTodo);
 $('.save-button').on('keyup', saveTodo);
 $('.inputs').on('keyup', validateSaveButton);
 $('.search-bar').on('keyup', searchTodos);
+$('.show-completed-btn').on('click', showCompletedTodos);
 $('.importance').on('click', '.importance-btn', filterByImportance);
 $('.card-container').on('click', '.delete', deleteTodo)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
                     .on('focusout', '.title', updateTitle)
                     .on('focusout', '.task', updateTask)
-                    .on('keyup', enterKeyBlur);
+                    .on('keyup', enterKeyBlur)
+                    .on('click', '.completed-btn', completeTask);
 
 // ----- Event Functions -----
 function saveTodo() {
   var todo = new Todo(getInputs());
   storeTodo(pushToTodos(todo));
-  prependTodos(getTodos());
+  prependTodos(getPendingTodos());
   clearInputs();
 }
 
@@ -146,7 +150,11 @@ function removeFromTodos(id) {
 }
 
 function buildTodoElement(todo) {
-  return `<article class="todo-card" id="${todo.id}">
+  var state = '';
+  if (todo.completed) {
+    state = 'completed';
+  }
+  return `<article class="todo-card ${state + '-card'}" id="${todo.id}">
             <button type="button" class="delete"></button>
             <h2 contenteditable="true" class="title">${todo.title}</h2>
             <p contenteditable="true" class="task">${todo.task}</p>
@@ -158,6 +166,7 @@ function buildTodoElement(todo) {
                 <span class="rating">${todo.importance}</span>
               </p>
               </div>
+              <button type="button" class="completed-btn ${state}">Completed Task</button>
           </article>`
 }
 
@@ -202,5 +211,37 @@ function filterByImportance() {
     prependTodos(getFilteredByImportance(importance));
   } else {
     prependTodos(getTodos());
+  }
+}
+
+function completeTask() {
+  var todos = getTodos();
+  var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
+  var todo = todos[index];
+  todo.completed = true;
+  todos[index] = todo;
+  storeTodo(todos);
+  $(this).parent().replaceWith(buildTodoElement(todo));
+}
+
+function getCompletedTodos() {
+  return getTodos().filter(function(todo) {
+    return todo.completed;
+  });
+}
+
+function getPendingTodos() {
+  return getTodos().filter(function(todo) {
+    return todo.completed === false;
+  });
+}
+
+function showCompletedTodos() {
+  if ($(this).text() === 'Completed') {
+    $(this).text('Pending');
+    prependTodos(getPendingTodos().concat(getCompletedTodos()));
+  } else {
+    $(this).text('Completed');
+    prependTodos(getPendingTodos());
   }
 }
