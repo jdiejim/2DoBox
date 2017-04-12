@@ -17,8 +17,8 @@ header {
   justify-content: space-around;
 }
 
-label {
-  display: none;
+main {
+  width: 100%;
 }
 
 h1 {
@@ -27,20 +27,19 @@ h1 {
   color: #00a79d;
 }
 
-main {
-  width: 100%;
+button {
+  width: 5%;
+  height: 20px;
+  border: none;
+  background: url(assets/radio-off-button.svg) no-repeat center;
+  background-size: contain;
+  align-self: center;
+}
+button:focus {
+  outline: none;
 }
 
-/*h2 {
-  display: inline-block;
-  width: 90%;
-  padding-bottom: 15px;
-  color: #6d6e71;
-  font-family: 'Roboto Slab', serif;
-  font-size: 22px;
-}*/
-
-.banner {
+.banner-secondary {
   color: #6d6e71;
   margin-bottom: 10px;
 }
@@ -55,10 +54,6 @@ main {
   align-items: center;
   flex-wrap: wrap;
   padding: 4px 0px;
-}
-
-.inputs-container {
-  display: flex;
 }
 
 .save-button {
@@ -88,6 +83,7 @@ main {
   height: 100%;
   padding: 10px 0;
 }
+
 .text-inputs {
   height: 30px;
   width: 100%;
@@ -103,31 +99,56 @@ main {
   color: #424242;
   font-weight: 300;
 }
-
 .text-inputs::-webkit-input-placeholder { /* Chrome */
   color: #424242;
   font-weight: 300;
 }
-.text-inputs:-ms-input-placeholder { /* IE 10+ */
+.text-inputs:-ms-input-placeholder {
+  /* IE 10+ */
   color: #424242;
   font-weight: 300;
 }
-.text-inputs::-moz-placeholder { /* Firefox 19+ */
-  color: #424242;
-  opacity: 1;
-  font-weight: 300;
-}
-.text-inputs:-moz-placeholder { /* Firefox 4 - 18 */
+.text-inputs::-moz-placeholder {
+  /* Firefox 19+ */
   color: #424242;
   opacity: 1;
   font-weight: 300;
 }
-
+.text-inputs:-moz-placeholder {
+  /* Firefox 4 - 18 */
+  color: #424242;
+  opacity: 1;
+  font-weight: 300;
+}
 .text-inputs:focus {
   outline-color: #424242;
 }
 
+.char-erro-msg {
+  font-size: 12px;
+}
 
+/*----- Main -----*/
+
+.filter-container {
+  width: 450px;
+  margin: 0 auto;
+  display: flex;
+  height: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: space-between;
+}
+.inputFilter {
+  width: 78%;
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.todos-count {
+  width: 450px;
+  margin: 0 auto 10px;
+}
 
 .todo-container {
   display: flex;
@@ -136,37 +157,43 @@ main {
   flex-direction: column;
 }
 
-
-
 .todo-card {
   min-width: 450px;
   max-width: 450px;
-  /*background-color: #CAC8C9;*/
-  /*width: 60%;*/
   border: 1px solid #d1d3d4;
-  /*padding-bottom: 10px;
-  padding-top: 30px;*/
-  /*padding: 20px;*/
-  /*overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-break: break-word;*/
   display: flex;
   flex-wrap: wrap;
   padding: 0 10px;
   margin-bottom: 5px;
 }
 
-button {
-  width: 5%;
-  height: 20px;
-  border: none;
-  background: url(assets/radio-off-button.svg) no-repeat center;
-  background-size: contain;
-  align-self: center;
+.completed-btn {
+  color: white;
+  width: 20%;
+  height: 30px;
+  background: none;
+  border-radius: 10px;
+  background-color: #5e9aff;
+  font-size: 14px;
 }
-button:focus {
-  outline: none;
+
+.completed {
+  background: url(assets/radio-on-button.svg) no-repeat center;
+  background-size: contain;
+  background-color: transparent;
+}
+
+.completed-card {
+  opacity: 0.5;
+}
+
+.completed-card .title {
+  opacity: 0.5;
+}
+
+.card-content {
+  width: 90%;
+  padding: 10px;
 }
 
 .title,
@@ -181,47 +208,31 @@ button:focus {
   margin-bottom: 10px;
 }
 
-.card-content {
-  width: 90%;
-  /*background-color: blue;*/
-  padding: 10px;
-}
-
-.completed {
-  background: url(assets/radio-on-button.svg) no-repeat center;
-  background-size: contain;
-  background-color: transparent;
-}
-
-
 .delete {
   width: 5%;
   height: 20px;
   background: url(assets/delete.svg) no-repeat center;
   background-size: contain;
 }
+.delete:hover {
+  background: url(assets/delete-hover.svg) no-repeat center;
+  background-size: contain;
+}
 
 .importance-container {
   display: flex;
-  /*justify-content: flex-end;*/
-  /*justify-content: space-between;*/
   width: 100%;
 }
 .importance-font {
   font-size: 12px;
   width: 50px;
-  /*background-color: blue;*/
   align-self: center;
-  /*margin: 0 8px;*/
-  /*margin-bottom: 5px;*/
 }
 .rating {
   width: 50px;
-  /*background-color: red;*/
   text-align: center;
   align-self: center;
 }
-
 
 .up-vote,
 .down-vote {
@@ -233,48 +244,36 @@ button:focus {
   background: url("assets/upvote.svg") no-repeat;
   background-size: cover;
 }
-.down-vote {
-  background: url("assets/downvote.svg") no-repeat;
-  background-size: cover;
-}
-
-/*.delete {
-  float: right;
-  vertical-align: top;
-  background: url("assets/delete.svg") no-repeat;
-  background-size: cover;
-}*/
-
-.delete:hover {
-  background: url(assets/delete-hover.svg) no-repeat center;
-  background-size: contain;
-}
-
-/*.up-vote {
-  margin-right: 10px;
-  background: url("assets/upvote.svg") no-repeat;
-  background-size: cover;
-}*/
-
 .up-vote:hover {
   background: url("assets/upvote-hover.svg") no-repeat;
   background-size: cover;
 }
 
-
+.down-vote {
+  background: url("assets/downvote.svg") no-repeat;
+  background-size: cover;
+}
 .down-vote:hover {
   background: url("assets/downvote-hover.svg") no-repeat;
   background-size: cover;
 }
 
-
-
-.completed-card {
-  /*text-decoration: line-through;*/
-  opacity: 0.5;
+.importance {
+  width: 450px;
+  height: 40px;
+  margin: 5px auto;
+  display: flex;
+  justify-content: space-between;
 }
-.completed-card .title {
-  opacity: 0.5;
+
+.importance-btn {
+  background: none;
+  width: 20%;
+  height: 25px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin: 0 5px;
+  cursor: pointer;
 }
 
 .show-more-btn {
@@ -287,24 +286,6 @@ button:focus {
   border-radius: 10px;
   height: 30px;
   font-size: 18px;
-}
-.importance {
-  width: 450px;
-  height: 40px;
-  margin: 5px auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.importance-btn {
-  background: none;
-  /*border: 1px solid black;*/
-  width: 20%;
-  height: 25px;
-  border-radius: 10px;
-  font-size: 12px;
-  margin: 0 5px;
-  cursor: pointer;
 }
 
 #Any {
@@ -327,61 +308,3 @@ button:focus {
   background-color: #373737;
   color: white;
 }
-
-.filter-container {
-  width: 450px;
-  margin: 0 auto;
-  /*height: 30px;*/
-  display: flex;
-  height: 40px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  justify-content: space-between;
-}
-.inputFilter {
-  width: 78%;
-  padding-left: 10px;
-  font-size: 16px;
-}
-
-.completed-btn {
-  color: white;
-  width: 20%;
-  height: 30px;
-  background: none;
-  border-radius: 10px;
-  background-color: #5e9aff;
-  font-size: 14px;
-}
-.char-erro-msg {
-  font-size: 12px;
-}
-
-.todos-count {
-  width: 450px;
-  margin: 0 auto 10px;
-}
-
-/*media queries*/
-
-/*@media (max-width: 700px) {
- input,
- .save-button,
- .todo-card {
-   width: 85%;
- }
-}
-
-@media (max-width: 400px) {
-.top-container {
-  height: 40vh;
-}
-
-.banner {
-  padding: 30px 0;
-}
-
-#task {
-   height: 120px;
- }
-}*/
