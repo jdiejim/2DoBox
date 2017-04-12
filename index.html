@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">  </head>
   <body>
     <header>
-      <h1 role="banner">idea<span class="header">box</span></h1>
+      <h1 role="banner">2Do<span class="header">box</span></h1>
     </header>
     <form class="inputs">
       <label for="title"></label>
@@ -17,9 +17,17 @@
       <input role="task-text-box" type="text" id="task" name="task" placeholder="task">
       <button role="button" class="save-button" type="submit" name="button">save</button>
     </form>
+    <section class="importance">
+      <button class="importance-btn" id="Any" type="button" name="button">Any</button>
+      <button class="importance-btn" id="Critical" type="button" name="button">Critical</button>
+      <button class="importance-btn" id="High" type="button" name="button">High</button>
+      <button class="importance-btn" id="Normal" type="button" name="button">Normal</button>
+      <button class="importance-btn" id="Low" type="button" name="button">Low</button>
+      <button class="importance-btn" id="None" type="button" name="button">None</button>
+    </section>
     <section class="search-container">
       <label for="search"></label>
-      <input role="search" class="search-bar" id="search" type="text" name="search" placeholder="Search">
+      <input role="search" class="search-bar" id="search" type="text" name="search" placeholder="Filter">
     </section>
     <main class="card-container"></main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
