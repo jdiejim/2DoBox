@@ -93,10 +93,7 @@ function searchIdeas() {
 
 // ----- Functions -----
 function getIdeas() {
-  try {
-    JSON.parse(localStorage.getItem('ideas'));
-  }
-  catch(err) {
+  if (!JSON.parse(localStorage.getItem('ideas'))) {
     storeIdea([]);
   }
   return JSON.parse(localStorage.getItem('ideas'));
