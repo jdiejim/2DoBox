@@ -37,6 +37,7 @@ function saveTodo(e) {
   storeTodo(pushToTodos(todo));
   prependNthsTodos(getPendingTodos(), 10);
   clearInputs();
+  validateSaveButton();
 }
 
 function deleteTodo() {
@@ -85,7 +86,7 @@ function updateTitle() {
   todo.title = $(this).text();
   todos[index] = todo;
   storeTodo(todos);
-  $(this).parent().replaceWith(buildTodoElement(todo));
+  $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
 }
 
 function updateTask() {
@@ -95,7 +96,7 @@ function updateTask() {
   todo.task = $(this).text();
   todos[index] = todo;
   storeTodo(todos);
-  $(this).parent().replaceWith(buildTodoElement(todo));
+  $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
 }
 
 function filterTodos() {
@@ -166,19 +167,19 @@ function buildTodoElement(todo) {
   if (todo.completed) {
     state = 'completed';
   }
-  return `<article class="todo-card ${state + 'card'}" id="${todo.id}">
-            <button type="button" class="delete"></button>
+  return `<article class="todo-card ${state + '-card'}" id="${todo.id}">
+            <button id="completed-btn" type="button" class="${state}"></button>
+            <section class="card-content">
             <h2 contenteditable="true" class="title">${todo.title}</h2>
             <p contenteditable="true" class="task">${todo.task}</p>
             <div class="importance-container">
               <button type="button" class="up-vote"></button>
               <button type="button" class="down-vote"></button>
-              <p class="todo-importance">
-                <span class="importance-font">importance: </span>
-                <span class="rating">${todo.importance}</span>
-              </p>
-              </div>
-              <button id="completed-btn" type="button" class="${state}">Completed Task</button>
+              <p class="importance-font">priority: </p>
+              <p class="rating">${todo.importance}</p>
+            </div>
+            </section>
+            <button type="button" class="delete"></button>
           </article>`
 }
 
@@ -241,7 +242,6 @@ function completeTask($btn) {
   var index = getTodoIndex($btn.parents('.todo-card').prop('id'));
   var todo = todos[index];
   todo.completed = true;
-  console.log(todo.completed);
   todos[index] = todo;
   storeTodo(todos);
   $btn.parent().replaceWith(buildTodoElement(todo));
