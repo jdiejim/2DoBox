@@ -1,5 +1,3 @@
-// TODO: add error mesage to char input
-
 // ----- Setup -----
 prependNthsTodos(getPendingTodos(), 10);
 updateCountTodos();
@@ -16,13 +14,13 @@ function Todo(inputs) {
 }
 
 // ----- Events Listeners -----
+$('.inputs').on('keyup', validateSaveButton);
 $('.save-button').on('click', saveTodo);
 $('.save-button').on('keyup', saveTodo);
-$('.inputs').on('keyup', validateSaveButton);
 $('.inputFilter').on('keyup', filterTodos);
-$('.show-more-btn').on('click', showMoreTodos)
-$('.completed-btn').on('click', showCompletedTodos);
 $('.importance').on('click', '.importance-btn', filterByImportance);
+$('.completed-btn').on('click', showCompletedTodos);
+$('.show-more-btn').on('click', showMoreTodos)
 $('.todo-container').on('click', '.delete', deleteTodo)
                     .on('click', '.up-vote', upVote)
                     .on('click', '.down-vote', downVote)
@@ -46,30 +44,24 @@ function deleteTodo() {
   storeTodo(removeFromTodos($(this).parent().prop('id')))
   $(this).parent().remove()
 }
-// TODO: refactor upvote
-// TODO: refactor upQuality
+
 function upVote() {
   var todos = getTodos();
   var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
   var todo = todos[index];
-  if (todo.level < 4) {
-    todo.level += 1;
-  }
-  todo.importance = upQuality(todo.level);
+  if (todo.level < 4) { todo.level += 1; }
+  todo.importance = updateImportance(todo.level);
   todos[index] = todo;
   storeTodo(todos);
   $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
 }
-// TODO: refactor downvote
-// TODO: refactor upQuality
+
 function downVote() {
   var todos = getTodos();
   var index = getTodoIndex($(this).parents('.todo-card').prop('id'));
   var todo = todos[index];
-  if (todo.level > 0) {
-    todo.level -= 1;
-  }
-  todo.importance = upQuality(todo.level);
+  if (todo.level > 0) { todo.level -= 1; }
+  todo.importance = updateImportance(todo.level);
   todos[index] = todo;
   storeTodo(todos);
   $(this).parents('.todo-card').replaceWith(buildTodoElement(todo));
@@ -110,7 +102,51 @@ function filterTodos() {
   }
 }
 
-// ----- Functions -----
+function filterByImportance() {
+  var importance = $(this).prop('id');
+  if (importance !== 'Any') {
+    prependTodos(getFilteredByImportance(importance));
+  } else {
+    prependTodos(getPendingTodos());
+  }
+}
+
+function markedTodo() {
+  if ($(this).prop('class') === '') {
+    completeTask($(this));
+  } else {
+    redoTask($(this));
+  }
+  updateCountTodos();
+}
+
+function showMoreTodos() {
+  if ($(this).text() === 'Show more TODOs ...') {
+    $(this).text('Show less TODOs ...');
+    prependTodos(getPendingTodos());
+  } else {
+    $(this).text('Show more TODOs ...');
+    prependNthsTodos(getPendingTodos(), 10);
+  }
+}
+
+function showCompletedTodos() {
+  if ($(this).text() === 'Completed') {
+    $(this).text('Pending');
+    prependTodos(getPendingTodos().concat(getCompletedTodos()));
+  } else {
+    $(this).text('Completed');
+    prependTodos(getPendingTodos());
+  }
+}
+
+// ----- Get Functions -----
+function getInputs() {
+  return {  title: $('#inputTitle').val(),
+  task: $('#inputTask').val(),
+  id: Date.now() };
+}
+
 function getTodos() {
   if (!JSON.parse(localStorage.getItem('todos'))) {
     storeTodo([]);
@@ -118,6 +154,41 @@ function getTodos() {
   return JSON.parse(localStorage.getItem('todos'));
 }
 
+function getPendingTodos() {
+  return getTodos().filter(function(todo) {
+    return todo.completed === false;
+  });
+}
+
+function getCompletedTodos() {
+  return getTodos().filter(function(todo) {
+    return todo.completed;
+  });
+}
+
+function getFilteredTodos(filterValue) {
+  return getPendingTodos().filter(function(todo) {
+    return todo.title.toLowerCase().indexOf(filterValue) !== -1 ||
+           todo.task.toLowerCase().indexOf(filterValue) !== -1;
+  });
+}
+
+function getFilteredByImportance(importance) {
+  return getPendingTodos().filter(function(todo) {
+    return todo.importance === importance;
+  });
+}
+
+function getTodoId(todo) {
+  return todo.id;
+}
+
+function getTodoIndex(id) {
+  var todos = getTodos();
+  return todos.map(getTodoId).indexOf(parseInt(id));
+}
+
+// ----- Prepend Functions -----
 function prependTodos(todos) {
   $('.todo-container').html('');
   todos.forEach(function(todo) {
@@ -135,33 +206,6 @@ function prependNthsTodos(todos, num) {
   } else {
     prependTodos(todos);
   }
-}
-
-function getInputs() {
-  return {  title: $('#inputTitle').val(),
-            task: $('#inputTask').val(),
-            id: Date.now() };
-}
-
-function pushToTodos(todo) {
-  var todos = getTodos();
-  todos.push(todo);
-  return todos;
-}
-
-function getTodoIndex(id) {
-  var todos = getTodos();
-  return todos.map(getTodoId).indexOf(parseInt(id));
-}
-
-function getTodoId(todo) {
-  return todo.id;
-}
-
-function removeFromTodos(id) {
-  var todos = getTodos();
-  todos.splice(getTodoIndex(id), 1);
-  return todos;
 }
 
 function buildTodoElement(todo) {
@@ -185,27 +229,24 @@ function buildTodoElement(todo) {
           </article>`
 }
 
-function clearInputs() {
-  $('#inputTitle').val('')
-  $('#inputTask').val('')
-}
-
+// ----- Add/Remove ToDo Functions -----
 function storeTodo(array) {
   localStorage.setItem('todos', JSON.stringify(array));
 }
 
-function upQuality(level) {
-  var levels = ['None', 'Low', 'Normal', 'High', 'Critical'];
-  return levels[level];
+function pushToTodos(todo) {
+  var todos = getTodos();
+  todos.push(todo);
+  return todos;
 }
 
-function getFilteredTodos(filterValue) {
-  return getTodos().filter(function(todo) {
-    return todo.title.toLowerCase().indexOf(filterValue) !== -1 ||
-           todo.task.toLowerCase().indexOf(filterValue) !== -1;
-  });
+function removeFromTodos(id) {
+  var todos = getTodos();
+  todos.splice(getTodoIndex(id), 1);
+  return todos;
 }
 
+// ----- DOM Element Functions -----
 function validateSaveButton() {
   var maxLength = 120;
   if ($('#inputTitle').val() !== "" && $('#inputTask').val() !== "" && $('#inputTitle').val().length < maxLength && $('#inputTask').val().length < maxLength) {
@@ -225,31 +266,21 @@ function charErrorMessage(num1, num2,  limit) {
   }
 }
 
-
-function getFilteredByImportance(importance) {
-  return getTodos().filter(function(todo) {
-    return todo.importance === importance;
-  });
+function clearInputs() {
+  $('#inputTitle').val('')
+  $('#inputTask').val('')
 }
 
-function filterByImportance() {
-  var importance = $(this).prop('id');
-  if (importance !== 'Any') {
-    prependTodos(getFilteredByImportance(importance));
-  } else {
-    prependTodos(getTodos());
-  }
+function updateCountTodos() {
+  $('.todos-count').text('Pending: ' + getPendingTodos().length);
 }
 
-function markedTodo() {
-  if ($(this).prop('class') === '') {
-    completeTask($(this));
-  } else {
-    redoTask($(this));
-  }
-  updateCountTodos();
+function updateImportance(level) {
+  var levels = ['None', 'Low', 'Normal', 'High', 'Critical'];
+  return levels[level];
 }
 
+// ----- Marking Functions -----
 function completeTask($btn) {
   var todos = getTodos();
   var index = getTodoIndex($btn.parents('.todo-card').prop('id'));
@@ -269,40 +300,4 @@ function redoTask($btn) {
   todos[index] = todo;
   storeTodo(todos);
   $btn.parent().replaceWith(buildTodoElement(todo));
-}
-
-function getCompletedTodos() {
-  return getTodos().filter(function(todo) {
-    return todo.completed;
-  });
-}
-
-function getPendingTodos() {
-  return getTodos().filter(function(todo) {
-    return todo.completed === false;
-  });
-}
-
-function showCompletedTodos() {
-  if ($(this).text() === 'Completed') {
-    $(this).text('Pending');
-    prependTodos(getPendingTodos().concat(getCompletedTodos()));
-  } else {
-    $(this).text('Completed');
-    prependTodos(getPendingTodos());
-  }
-}
-
-function showMoreTodos() {
-  if ($(this).text() === 'Show more TODOs ...') {
-    $(this).text('Show less TODOs ...');
-    prependTodos(getPendingTodos());
-  } else {
-    $(this).text('Show more TODOs ...');
-    prependNthsTodos(getPendingTodos(), 10);
-  }
-}
-
-function updateCountTodos() {
-  $('.todos-count').text('Pending: ' + getPendingTodos().length);
 }
